@@ -1,0 +1,77 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+      - name: Build Docker images
+        run: |
+          cd docker
+          docker compose build
+      
+      - name: Export Docker images
+        run: |
+          cd docker/offline-package
+          mkdir -p images
+          docker save docker-mysql -o images/mysql.tar
+          docker save docker-backend -o images/backend.tar
+          docker save docker-admin -o images/admin.tar
+          docker save docker-mobile -o images/mobile.tar
+          docker save redis:7-alpine -o images/redis.tar
+          docker save nginx:alpine -o images/nginx.tar
+      
+      - name: Copy config files
+        run: |
+          cp docker/env.example docker/offline-package/.env.example
+          cp -r docker/nginx docker/offline-package/
+      
+      - name: Create ZIP package
+        run: |
+          cd docker
+          zip -r order-system-offline-v${{ steps.version.outputs.VERSION }}.zip offline-package/
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: 扫码点餐系统 v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## 更新内容
+            
+            请查看 [CHANGELOG.md](CHANGELOG.md) 了解详细更新内容。
+            
+            ## 部署说明
+            
+            1. 下载 `order-system-offline-v${{ steps.version.outputs.VERSION }}.zip`
+            2. 上传到服务器并解压
+            3. 执行 `./import.sh` 导入镜像
+            4. 配置 `.env` 文件
+            5. 执行 `docker compose up -d` 启动服务
+            
+            详细部署说明请查看 [DEPLOY.md](DEPLOY.md)
+            
+            ## 联系方式
+            
+            - QQ: 1612423062
+          files: |
+            docker/order-system-offline-v${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
