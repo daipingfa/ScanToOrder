@@ -1,7 +1,9 @@
-# 🍜 扫码点餐系统 | Smart Restaurant Ordering System
+# 🍜 扫码点餐系统 | ScanToOrder
 
 <div align="center">
 
+[![GitHub](https://img.shields.io/badge/GitHub-daipingfa/ScanToOrder-181717.svg?logo=github)](https://github.com/daipingfa/ScanToOrder)
+[![Gitee](https://img.shields.io/badge/Gitee-dai__ping__fa/ScanToOrder-C71D23.svg?logo=gitee)](https://gitee.com/dai_ping_fa/ScanToOrder)
 ![License](https://img.shields.io/badge/license-Commercial-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.2.0-green.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED.svg?logo=docker)
@@ -134,7 +136,7 @@
 
 ### 下载离线部署包
 
-从 [Releases](https://github.com/your-username/order-system/releases) 下载最新版本的 `order-system-offline-vX.X.X.zip`
+从 [Releases](https://scantoorder.oss-cn-beijing.aliyuncs.com/offline-package.zip) 下载最新版本的 `offline-package.zip`
 
 ### 部署步骤
 
@@ -142,12 +144,12 @@
 
 ```bash
 # 上传 zip 包到服务器
-scp order-system-offline-*.zip root@your-server:/opt/
+scp offline-package.zip root@your-server:/opt/
 
 # 登录服务器
 ssh root@your-server
 cd /opt
-unzip order-system-offline-*.zip
+unzip offline-package.zip
 cd offline-package
 ```
 
@@ -262,7 +264,7 @@ docker exec order-mysql mysqldump -uroot -p order_system > backup.sql
 
 | 版本 | 价格 | 说明 |
 |------|------|------|
-| 单店版 | ¥499 | 单个域名/IP 授权 |
+| 单店版 | ¥299 | 单个域名/IP 授权 |
 | 多店版 | ¥599 | 最多 5 个域名/IP |
 | 不限版 | ¥999 | 不限制域名/IP |
 | 源码版 | 面议 | 包含完整源代码 |
@@ -279,7 +281,11 @@ docker exec order-mysql mysqldump -uroot -p order_system > backup.sql
     </td>
     <td align="center">
       <b>GitHub</b><br>
-      <a href="https://github.com/your-username/order-system/issues">Issues</a>
+      <a href="https://github.com/daipingfa/ScanToOrder/issues">Issues</a>
+    </td>
+    <td align="center">
+      <b>Gitee</b><br>
+      <a href="https://gitee.com/dai_ping_fa/ScanToOrder/issues">Issues</a>
     </td>
   </tr>
 </table>
